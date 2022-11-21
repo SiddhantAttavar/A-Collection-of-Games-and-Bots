@@ -1,4 +1,5 @@
 import pygame
+
 pygame.init()
 
 brinjal = pygame.font.SysFont('Comic Sans',25)
@@ -36,7 +37,7 @@ class Button:
 		pygame.draw.rect(screen,self.top_color, self.top_rect,border_radius = 12)
 		screen.blit(self.text_surf, self.text_rect)
 		self.check_click()
-    
+
 	def check_click(self):
 		mouse_pos = pygame.mouse.get_pos()
 		if self.top_rect.collidepoint(mouse_pos):
@@ -57,7 +58,8 @@ class Button:
 		print('click')
 
 run = True
-klikykliky = Button('KLIQ!',200,40,(200,250),5)
+_2048 = Button('2048',200,40,(20, 20),5)
+bootons = [_2048]
 
 while run:
     for event in pygame.event.get():
@@ -65,8 +67,8 @@ while run:
             run = False
     
     screen.fill((30, 30, 30))
-    klikykliky.draw()
+    for b in bootons: b.draw()
     pygame.display.update()
 
-    clock.tick(1000)
+    clock.tick(60)
     
