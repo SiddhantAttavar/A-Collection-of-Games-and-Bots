@@ -1,5 +1,8 @@
 import pygame
 
+from twentyfortyeight.Game import runGame
+from twentyfortyeight.AI import runAI
+
 pygame.init()
 
 brinjal = pygame.font.SysFont('Comic Sans',25)
@@ -57,9 +60,38 @@ class Button:
 	def press(self):
 		print('click')
 
+def on2048PressGame():
+	runGame(True)
+
+def on2048PressAI():
+	runAI()
+
+def onTicTacToePress():
+	from TicTacTerminator import GUI
+
+def onSnekPress():
+	from Snake import Snake
+
+def onClickAIPress():
+	i = 1
+	while True:
+		print(i, 'click')
+		i += 1
+
 run = True
-_2048 = Button('2048',200,40,(20, 20),5)
-bootons = [_2048]
+_2048Game = Button('2048 Game',200,40,(20, 20),5)
+_2048AI = Button('2048 AI',200,40,(250, 20),5)
+TicTacToe = Button('TicTacToe',200,40,(20, 100),5)
+Snek = Button('Snek',200,40,(20, 180),5)
+ClickGame = Button('Cookie clicker',200,40,(20, 260),5)
+ClickAI = Button('Cookie clicker AI',200,40,(250, 260),5)
+bootons = [_2048Game, _2048AI, TicTacToe, Snek, ClickGame, ClickAI]
+
+_2048Game.press = on2048PressGame
+_2048AI.press = on2048PressAI
+TicTacToe.press = onTicTacToePress
+Snek.press = onSnekPress
+ClickAI.press = onClickAIPress
 
 while run:
     for event in pygame.event.get():

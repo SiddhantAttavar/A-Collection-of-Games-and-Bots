@@ -4,7 +4,7 @@ from time import sleep, time
 from copy import deepcopy
 from random import sample, choice
 
-import Game
+import twentyfortyeight.Game as Game
 
 def heuristicValue(board, score):
     # Calculat the heuristic value of the current state

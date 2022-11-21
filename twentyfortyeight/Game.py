@@ -12,7 +12,7 @@ def runGame(playerIsHuman):
     root.configure(bg = BACKGROUND_COLOR)
     root.protocol('WM_DELETE_WINDOW', exit)
     root.title('2048 AI')
-    root.iconbitmap('logo.ico')
+    root.iconbitmap('twentyfortyeight\logo.ico')
 
     score = 0
     scoreLabel = Label(

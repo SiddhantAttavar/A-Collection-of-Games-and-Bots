@@ -2,8 +2,8 @@
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = 'hide'
 import pygame, sys, time
-from Game import Game
-from Buttons import Button, TextButton
+from TicTacTerminator.Game import Game
+from TicTacTerminator.Buttons import Button, TextButton
 from json import load, dumps
 
 # set screen dimensions
@@ -12,9 +12,9 @@ WIDTH, HEIGHT = 650, 650
 # initialize pygame window
 pygame.init()
 pygame.display.set_caption('Tic Tac Terminator')
-pygame.display.set_icon(pygame.image.load('assets/icon.png'))
+pygame.display.set_icon(pygame.image.load('TicTacTerminator/assets/icon.png'))
 screen = pygame.display.set_mode((WIDTH, HEIGHT+100))
-bg_image = pygame.image.load('assets/background.jpg').convert()
+bg_image = pygame.image.load('TicTacTerminator/assets/background.jpg').convert()
 bg_image = pygame.transform.scale(bg_image, (WIDTH, HEIGHT+100))
 font = pygame.font.Font(None, 40)
 font_large = pygame.font.Font(None, 60)

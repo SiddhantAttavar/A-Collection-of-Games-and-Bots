@@ -1,5 +1,5 @@
 # Import packages
-from Bot import *
+from TicTacTerminator.Bot import *
 from json import load, dumps
 
 class Game:
