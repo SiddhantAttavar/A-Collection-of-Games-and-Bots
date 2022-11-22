@@ -29,7 +29,36 @@ class Snake(tk.Canvas):
 
         self.pack()
 
+        self.createAIPath()
+
         self.after(GAME_SPEED, self.perform_actions)
+    
+    def dfs(self, x, y):
+        if x in (0, 600) or y in (20, 620):
+            return False
+        
+        if (x, y) in self.visited:
+            return False
+        
+        self.path.append((x, y))
+        self.visited.add((x, y))
+        
+        if len(self.path) == 30 * 30:
+            return True
+        
+        n = [(x - 20, y), (x + 20, y), (x, y - 20), (x, y + 20)]
+        for i, j in n:
+            if self.dfs(i, j):
+                return True
+        
+        self.visited.remove((x, y))
+        return False
+
+    def createAIPath(self):
+        self.visited = set()
+        self.path = []
+        self.dfs(*self.snake_positions[0])
+        self.ind = (self.path.index(self.snake_positions[0]) + 1) % len(self.path)
 
     def load_assets(self):
         try:
@@ -100,14 +129,8 @@ class Snake(tk.Canvas):
     def move_snake(self):
         head_x_position, head_y_position = self.snake_positions[0]
 
-        if self.direction == "Left":
-            new_head_position = (head_x_position - MOVE_INCREMENT, head_y_position)
-        elif self.direction == "Right":
-            new_head_position = (head_x_position + MOVE_INCREMENT, head_y_position)
-        elif self.direction == "Down":
-            new_head_position = (head_x_position, head_y_position + MOVE_INCREMENT)
-        elif self.direction == "Up":
-            new_head_position = (head_x_position, head_y_position - MOVE_INCREMENT)
+        new_head_position = self.path[self.ind]
+        self.ind = (self.ind + 1) % len(self.path)
 
         self.snake_positions = [new_head_position] + self.snake_positions[:-1]
 
