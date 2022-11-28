@@ -153,3 +153,4 @@ root.tk.call("tk", "scaling", 4.0)
 board = Snake()
 
 root.mainloop()
+>>>>>>> main
