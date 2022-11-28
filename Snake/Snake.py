@@ -33,8 +33,7 @@ class Snake(tk.Canvas):
 
     def load_assets(self):
         try:
-            self.snake_body_image = Image.open("Snake/snake.png")
-            self.snake_body = ImageTk.PhotoImage(self.snake_body_image)
+            self.snake_body_image = Image.open("Snake/snake.png") self.snake_body = ImageTk.PhotoImage(self.snake_body_image)
 
             self.food_image = Image.open("Snake/food.png")
             self.food = ImageTk.PhotoImage(self.food_image)
@@ -81,10 +80,10 @@ class Snake(tk.Canvas):
     def end_game(self):        
         msg = f"Game over! You scored {self.score}!"
         
-        highscore = int(open('highscore.txt', 'r').read())
+        highscore = int(open('Snake/highscore.txt', 'r').read())
         if self.score > highscore:
             msg += "\nNew highscore!"
-            open('highscore.txt', 'w').write(str(self.score))
+            open('Snake/highscore.txt', 'w').write(str(self.score))
 
         self.delete(tk.ALL)
         self.create_text(
@@ -153,4 +152,3 @@ root.tk.call("tk", "scaling", 4.0)
 board = Snake()
 
 root.mainloop()
->>>>>>> main

@@ -4,9 +4,8 @@ from PIL import Image, ImageTk
 
 
 MOVE_INCREMENT = 20
-MOVES_PER_SECOND = 15
+MOVES_PER_SECOND = 1500
 GAME_SPEED = 1500 // MOVES_PER_SECOND
-
 
 class Snake(tk.Canvas):
     def __init__(self):
@@ -16,7 +15,7 @@ class Snake(tk.Canvas):
 
         self.playing = True
 
-        self.snake_positions = [(100, 100), (80, 100), (60, 100)]
+        self.snake_positions = [(100, 100), (120, 100), (140, 100)]
         self.food_position = self.set_new_food_position()
         self.direction = "Right"
 
@@ -33,32 +32,77 @@ class Snake(tk.Canvas):
 
         self.after(GAME_SPEED, self.perform_actions)
     
-    def dfs(self, x, y):
-        if x in (0, 600) or y in (20, 620):
+    def split(self, x):
+        return ((x // 30) * 20, (x % 30) * 20 + 20)
+
+    def combine(self, a):
+        x, y = a
+        return ((x // 20) * 30) + ((y - 20) // 20)
+
+    def safe(self, v, i):
+        if not self.graph[self.path[i - 1]][v]:
             return False
-        
-        if (x, y) in self.visited:
-            return False
-        
-        self.path.append((x, y))
-        self.visited.add((x, y))
-        
-        if len(self.path) == 30 * 30:
-            return True
-        
-        n = [(x - 20, y), (x + 20, y), (x, y - 20), (x, y + 20)]
-        for i, j in n:
-            if self.dfs(i, j):
-                return True
-        
-        self.visited.remove((x, y))
+
+        return v not in self.visited
+    
+    def pathUtil(self, i):
+        n = 30 * 29
+        if i == n: 
+            return self.graph[self.path[i - 1]][self.path[0]]
+
+        for v in range(n):
+            if self.safe(v, i):
+                self.path[i] = v
+                self.visited.add(v)
+                if self.pathUtil(i + 1):
+                    return True
+                self.visited.remove(v)
+                self.path[i] = -1
+
         return False
 
+    def check(self, a):
+        x, y = a
+        return not (x <= 0 or x >= 580 or y <= 20 or y >= 600)
+
     def createAIPath(self):
-        self.visited = set()
+        # self.createAIPathUtil()
         self.path = []
-        self.dfs(*self.snake_positions[0])
-        self.ind = (self.path.index(self.snake_positions[0]) + 1) % len(self.path)
+        for i in range(40, 580, 40):
+            for j in range(40, 600, 20):
+                self.path.append((i, j))
+            for j in range(580, 20, -20):
+                self.path.append((i + 20, j))
+        for i in range(580, 40, -20):
+            self.path.append((i, 20))
+
+        self.path = [(i, j) for j, i in self.path]
+
+        self.ind = (self.path.index((100, 100)) + 1) % len(self.path)
+
+    def createAIPathUtil(self):
+        n = 30 * 29
+        self.graph = [[0] * n for _ in range(n)]
+
+        for i in range(n):
+            x, y = self.split(i)
+            if self.check((x - 20, y)):
+                self.graph[i][self.combine((x - 20, y))] = 1
+            if self.check((x + 20, y)):
+                self.graph[i][self.combine((x + 20, y))] = 1
+            if self.check((x, y - 20)):
+                self.graph[i][self.combine((x, y - 20))] = 1
+            if self.check((x, y + 20)):
+                self.graph[i][self.combine((x, y + 20))] = 1
+
+        self.path = [-1] * n
+        self.path[0] = self.combine((100, 100))
+        self.visited = {self.path[0]}
+
+        self.pathUtil(1)
+
+        self.ind = 0
+        self.path = [self.split(i) for i in self.path]
 
     def load_assets(self):
         try:
@@ -110,10 +154,10 @@ class Snake(tk.Canvas):
     def end_game(self):        
         msg = f"Game over! You scored {self.score}!"
         
-        highscore = int(open('highscore.txt', 'r').read())
+        highscore = int(open('Snake/highscore.txt', 'r').read())
         if self.score > highscore:
             msg += "\nNew highscore!"
-            open('highscore.txt', 'w').write(str(self.score))
+            open('Snake/highscore.txt', 'w').write(str(self.score))
 
         self.delete(tk.ALL)
         self.create_text(
@@ -152,6 +196,7 @@ class Snake(tk.Canvas):
     def perform_actions(self):
         if self.playing and self.check_collisions():
             self.end_game()
+            return
 
         self.check_food_collision()
         self.move_snake()
@@ -161,12 +206,11 @@ class Snake(tk.Canvas):
     def set_new_food_position(self):
         while True:
             x_position = randint(1, 29) * MOVE_INCREMENT
-            y_position = randint(3, 30) * MOVE_INCREMENT
+            y_position = randint(3, 29) * MOVE_INCREMENT
             food_position = (x_position, y_position)
 
             if food_position not in self.snake_positions:
                 return food_position
-
 
 root = tk.Tk()
 root.title("Snake")
