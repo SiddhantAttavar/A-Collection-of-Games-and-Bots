@@ -6,7 +6,7 @@ from twentyfortyeight.AI import runAI
 pygame.init()
 
 brinjal = pygame.font.SysFont('Comic Sans',25)
-screen = pygame.display.set_mode((16*35, 9*35))
+screen = pygame.display.set_mode((int(13.5*35), 9*35))
 clock = pygame.time.Clock()
 
 class Button:
@@ -72,6 +72,9 @@ def onTicTacToePress():
 def onSnekPress():
 	from Snake import Snake
 
+def onMazePress():
+	pass
+
 def onClickAIPress():
 	i = 1
 	while True:
@@ -82,14 +85,16 @@ run = True
 _2048Game = Button('2048 Game',200,40,(20, 20),5)
 _2048AI = Button('2048 AI',200,40,(250, 20),5)
 TicTacToe = Button('TicTacToe',200,40,(20, 100),5)
+MazeAI = Button('Maze AI',200,40,(250, 100),5)
 Snek = Button('Snek',200,40,(20, 180),5)
 ClickGame = Button('Cookie clicker',200,40,(20, 260),5)
 ClickAI = Button('Cookie clicker AI',200,40,(250, 260),5)
-bootons = [_2048Game, _2048AI, TicTacToe, Snek, ClickGame, ClickAI]
+bootons = [_2048Game, _2048AI, TicTacToe, MazeAI, Snek, ClickGame, ClickAI]
 
 _2048Game.press = on2048PressGame
 _2048AI.press = on2048PressAI
 TicTacToe.press = onTicTacToePress
+MazeAI.press = onMazePress
 Snek.press = onSnekPress
 ClickAI.press = onClickAIPress
 

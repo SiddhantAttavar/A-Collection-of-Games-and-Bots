@@ -60,11 +60,11 @@ def draw_board():
 	for col_ind, col in enumerate(game.board):
 		for row_ind, cell in enumerate(col):
 			if cell == True:
-				surf = pygame.image.load('assets/x.png')
+				surf = pygame.image.load('TicTacTerminator/assets/x.png')
 				rect = surf.get_rect(center = (WIDTH // 6 + row_ind*(WIDTH // 3), HEIGHT // 6 + col_ind*(HEIGHT // 3)))
 				screen.blit(surf, rect)
 			elif cell == False:
-				surf = pygame.image.load('assets/o.png')
+				surf = pygame.image.load('TicTacTerminator/assets/o.png')
 				rect = surf.get_rect(center = (WIDTH // 6 + row_ind*(WIDTH // 3), HEIGHT // 6 + col_ind*(HEIGHT // 3)))
 				screen.blit(surf, rect)
 
